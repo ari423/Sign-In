@@ -1,14 +1,17 @@
-import javax.swing.JFrame;
-
 //Ari Meles-Braverman
+
+import javax.swing.JFrame;
+import java.awt.Toolkit;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
 		GUI gui = new GUI();
-		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gui.setSize(200,200);
+		gui.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		gui.setSize(150,175);
+		gui.setResizable(false);
+		gui.setLocation((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth() - gui.getSize().getWidth())/2, (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight() - gui.getSize().getHeight())/3);
 		gui.setVisible(true);
 	}
 
