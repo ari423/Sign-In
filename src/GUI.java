@@ -33,13 +33,14 @@ public class GUI extends JFrame {
 		
 		try {
 			reader = new Scanner(new File("Files/" + (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()) + ".txt"));
+			while(reader.hasNext()){
+				list.add(reader.nextLine());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		while(reader.hasNext()){
-			list.add(reader.nextLine());
-		}
+		
 		
 		try {
 			writer = new PrintWriter(new File("Files/" + (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()) + ".txt"));
