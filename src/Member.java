@@ -13,6 +13,10 @@ public class Member {
 		this("","");
 	}
 	
+	public Member(Member member){
+		this(member.name, member.code);
+	}
+	
 	public boolean check(String code){
 		return code.equals(this.code);
 	}
