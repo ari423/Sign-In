@@ -17,35 +17,31 @@ import java.awt.Font;
 public class GUI extends JFrame {
 	
 	public JPanel panel;
-	
 	public JLabel name;
 	public JTextField code;
 	public JButton go, close;
 	
+	public File file;
 	public Scanner reader;
 	public PrintWriter writer;
 	
 	public Member[] key;
 	public ArrayList<String> list = new ArrayList<String>();
 	
-	public GUI(){
+	
+	public GUI(Configure configure){
 		super();
 		
-		try {
-			reader = new Scanner(new File("Files/" + (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()) + ".txt"));
+		file = new File("Files/" + (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()) + ".txt");
+		
+		try{
+			reader = new Scanner(file);
 			while(reader.hasNext()){
 				list.add(reader.nextLine());
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		
-		try {
-			writer = new PrintWriter(new File("Files/" + (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()) + ".txt"));
+			writer = new PrintWriter(file);
 			reader = new Scanner(new File("Files/Key.txt"));
-		} catch (Exception e) {
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
