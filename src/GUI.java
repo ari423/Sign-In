@@ -28,9 +28,12 @@ public class GUI extends JFrame {
 	public Member[] key;
 	public ArrayList<String> list = new ArrayList<String>();
 	
+	public Configure configure;	
 	
 	public GUI(Configure configure){
 		super();
+		
+		this.configure = configure;
 		
 		file = new File("Files/" + (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()) + ".txt");
 		
@@ -39,6 +42,12 @@ public class GUI extends JFrame {
 			while(reader.hasNext()){
 				list.add(reader.nextLine());
 			}
+			
+		}catch(Exception e){
+			//e.printStackTrace();
+		}
+		
+		try{
 			writer = new PrintWriter(file);
 			reader = new Scanner(new File("Files/Key.txt"));
 		}catch(Exception e){
@@ -99,18 +108,15 @@ public class GUI extends JFrame {
 				if(key[i].check(codetxt)){
 					if(list.contains(key[i].name)){
 						name.setText("Already Signed-In");
-						System.out.println("already");
 						break;
 					}else{
-						writer.println(key[i].name);
+						writer.println(key[i].name + "    " + timeLeft());
 						name.setText(key[i].name);
 						list.add(key[i].name);
-						System.out.println("add");
 						break;
 					}
 				}
 				name.setText("Not In System");
-				System.out.println("not in");
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -129,6 +135,22 @@ public class GUI extends JFrame {
 		}
 		
 		return array;
+	}
+	
+	public double timeLeft(){
+		long start = configure.startDate.getTime();
+		long current = (new Date()).getTime();
+		long end = configure.endDate.getTime();
+		System.out.println(start);
+		System.out.println(current);
+		System.out.println(end);
+		if(Math.abs(start-current)<=600000L){
+			System.out.println("close");
+			return (end-start)/600000L;
+		}else{
+			System.out.println("not");
+			return (end-current)/600000L;
+		}
 	}
 	
 }

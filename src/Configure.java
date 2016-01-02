@@ -6,9 +6,12 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.util.Date;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
+
 
 public class Configure extends JFrame{
 
@@ -16,6 +19,8 @@ public class Configure extends JFrame{
 	public JSpinner start, end;
 	public JLabel startl, breakl, endl;
 	public JButton close;
+	
+	public Date startDate, endDate;
 	
 	public Configure(){
 		super();
@@ -30,7 +35,7 @@ public class Configure extends JFrame{
 		breakl = new JLabel("    ");
 		panel.add(breakl);
 		
-		Date startDate = new Date();
+		startDate = new Date();
 		start = new JSpinner(new SpinnerDateModel(startDate, null, null,Calendar.HOUR_OF_DAY));
 		start.setEditor(new JSpinner.DateEditor(start, "hh:mm"));
 		panel.add(start);
@@ -38,14 +43,20 @@ public class Configure extends JFrame{
 		endl = new JLabel("END TIME");
 		panel.add(endl);
 		
-		Date endDate = new Date();
+		endDate = new Date();
 		endDate.setHours(startDate.getHours() + 2);
-		start = new JSpinner(new SpinnerDateModel(endDate, null, null,Calendar.HOUR_OF_DAY));
-		start.setEditor(new JSpinner.DateEditor(start, "hh:mm"));
-		panel.add(start);
+		end = new JSpinner(new SpinnerDateModel(endDate, null, null,Calendar.HOUR_OF_DAY));
+		end.setEditor(new JSpinner.DateEditor(end, "hh:mm"));
+		panel.add(end);
 		
 		close = new JButton("CLOSE");
 		panel.add(close);
+		close.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				startDate = (Date) start.getValue();
+				endDate = (Date) end.getValue();
+			}
+		});
 		
 	}
 	
