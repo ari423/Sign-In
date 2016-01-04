@@ -15,12 +15,12 @@ import javax.swing.SpinnerDateModel;
 
 public class Configure extends JFrame{
 
-	public JPanel panel;
-	public JSpinner start, end;
-	public JLabel startl, breakl, endl;
+	private JPanel panel;
+	private JSpinner start, end;
+	private JLabel startl, breakl, endl;
 	public JButton close;
 	
-	public Date startDate, endDate;
+	public Calendar startDate, endDate;
 	
 	public Configure(){
 		super();
@@ -32,29 +32,31 @@ public class Configure extends JFrame{
 		startl = new JLabel("START TIME");
 		panel.add(startl);
 		
+		startDate = Calendar.getInstance();
+		start = new JSpinner(new SpinnerDateModel(startDate.getTime(), null, null,Calendar.HOUR_OF_DAY));
+		start.setEditor(new JSpinner.DateEditor(start, "HH:mm"));
+		panel.add(start);
+		
 		breakl = new JLabel("    ");
 		panel.add(breakl);
-		
-		startDate = new Date();
-		start = new JSpinner(new SpinnerDateModel(startDate, null, null,Calendar.HOUR_OF_DAY));
-		start.setEditor(new JSpinner.DateEditor(start, "hh:mm"));
-		panel.add(start);
 		
 		endl = new JLabel("END TIME");
 		panel.add(endl);
 		
-		endDate = new Date();
-		endDate.setHours(startDate.getHours() + 2);
-		end = new JSpinner(new SpinnerDateModel(endDate, null, null,Calendar.HOUR_OF_DAY));
-		end.setEditor(new JSpinner.DateEditor(end, "hh:mm"));
+		endDate = Calendar.getInstance();
+		endDate.set(Calendar.HOUR_OF_DAY, startDate.get(Calendar.HOUR_OF_DAY) + 2);
+		end = new JSpinner(new SpinnerDateModel(endDate.getTime(), null, null,Calendar.HOUR_OF_DAY));
+		end.setEditor(new JSpinner.DateEditor(end, "HH:mm"));
 		panel.add(end);
 		
-		close = new JButton("CLOSE");
+		close = new JButton("BEGIN");
 		panel.add(close);
 		close.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				startDate = (Date) start.getValue();
-				endDate = (Date) end.getValue();
+				startDate.set(Calendar.HOUR_OF_DAY, ((Date) start.getValue()).getHours());
+				startDate.set(Calendar.MINUTE, ((Date) start.getValue()).getMinutes());
+				endDate.set(Calendar.HOUR_OF_DAY, ((Date) end.getValue()).getHours());
+				endDate.set(Calendar.MINUTE, ((Date) end.getValue()).getMinutes());
 			}
 		});
 		
