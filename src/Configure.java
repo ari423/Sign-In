@@ -4,10 +4,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Calendar;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -22,7 +26,7 @@ public class Configure extends JFrame{
 	
 	public Calendar startDate, endDate;
 	
-	public Configure(){
+	public Configure(GUI gui){
 		super();
 		
 		panel = new JPanel();
@@ -60,6 +64,16 @@ public class Configure extends JFrame{
 			}
 		});
 		
+	}
+	
+	public void addListener(KeyListener key){
+		panel.addKeyListener(key);
+		start.addKeyListener(key);
+		end.addKeyListener(key);
+		startl.addKeyListener(key);
+		breakl.addKeyListener(key);
+		endl.addKeyListener(key);
+		close.addKeyListener(key);
 	}
 	
 }

@@ -31,6 +31,7 @@ public class GUI extends JFrame {
 	
 	private Member[] key;
 	private ArrayList<String> attendance;
+	private String header;
 	
 	private Configure configure;	
 	
@@ -48,8 +49,14 @@ public class GUI extends JFrame {
 			while(reader.hasNext()){
 				attendance.add(reader.nextLine());
 			}
+			if(attendance.size() == 0)
+				attendance.add(" ");
 			numcommas = attendance.get(0).split(",").length;
+			header = attendance.remove(0);
+			header += "," + (configure.startDate.get(Calendar.MONTH) +1) + "/" + configure.startDate.get(Calendar.DATE);
+			System.out.println("header: " + header);
 		}catch(Exception e){
+			e.printStackTrace();
 			numcommas = 0;
 		}
 		
@@ -191,7 +198,7 @@ public class GUI extends JFrame {
 		go.addKeyListener(key);
 	}
 	
-	private void exit(){
+	public void exit(){
 		for(int i=0; i<attendance.size(); i++){
 			if(attendance.get(i).split(",").length -1 < numcommas){
 				attendance.set(i, attendance.get(i) + ",0");
@@ -200,6 +207,7 @@ public class GUI extends JFrame {
 		
 		try{
 			writer = new PrintWriter(file);
+			writer.println(header);
 			for(int i=0; i<attendance.size(); i++){
 				writer.println(attendance.get(i));
 			}
@@ -213,8 +221,10 @@ public class GUI extends JFrame {
 	
 	private class F4Listener implements KeyListener{
 		public void keyReleased(KeyEvent e){
-			try{Thread.sleep(20);}catch(Exception ex){}
-			exit();
+			if(e.getKeyCode() == KeyEvent.VK_F4){
+				try{Thread.sleep(20);}catch(Exception ex){}
+				exit();
+			}
 		}
 		public void keyTyped(KeyEvent e){}
 		public void keyPressed(KeyEvent e){}
