@@ -202,6 +202,7 @@ public class GUI extends JFrame {
 			array[i] = new Member(tmp.get(i).split(",")[1], tmp.get(i).split(",")[0]);
 		}
 		
+		System.out.println("test");
 		return array;
 	}
 	
