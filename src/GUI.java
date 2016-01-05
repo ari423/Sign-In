@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.awt.Font;
 import javax.swing.Timer;
 
@@ -139,14 +140,14 @@ public class GUI extends JFrame {
 		String namestr = getName(codestr);
 		
 		if(namestr == null){
-			setNameText("Not In System");
+			name.setText("Not In System");
 		}else{
 			for(int i=0; i<attendance.size(); i++){
 				if(attendance.get(i).contains(namestr)){
+					System.out.println(attendance.get(i));
 					if(attendance.get(i).split(",").length -1 < numcommas){
 						attendance.set(i, attendance.get(i) + "," + getTime());
-						System.out.println("prehit");
-						setNameText(namestr);
+						name.setText(namestr);
 					}else{
 						String[] line = attendance.get(i).split(",");
 						line[line.length -1] = (Double.parseDouble(line[line.length -1]) - getTime()) + "";
@@ -155,7 +156,7 @@ public class GUI extends JFrame {
 							tmp += "," + line[j];
 						}
 						attendance.set(attendance.size()-1, tmp);
-						setNameText("* " + namestr);
+						name.setText("* " + namestr);
 					}
 					return;
 				}
@@ -165,6 +166,7 @@ public class GUI extends JFrame {
 				attendance.set(attendance.size()-1, attendance.get(attendance.size()-1) + ",0");
 			}
 			attendance.set(attendance.size()-1, attendance.get(attendance.size()-1) + "," + getTime());
+			name.setText(namestr);
 		}
 	}
 	
@@ -194,31 +196,13 @@ public class GUI extends JFrame {
 			tmp.add(reader.nextLine());
 		}
 		
+		tmp.removeAll(Collections.singleton(""));
 		Member[] array = new Member[tmp.size()];
 		for(int i=0; i<tmp.size(); i++){
 			array[i] = new Member(tmp.get(i).split(",")[1], tmp.get(i).split(",")[0]);
 		}
 		
 		return array;
-	}
-	
-	private void setNameText(String str){
-		System.out.println("hit");
-		if(timer != null){
-			timer.stop();
-			timer = null;
-		}
-		name.setText(str);
-		System.out.println("start");
-		timer = new Timer(2000, new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				name.setText("                     ");
-				timer.stop();
-				timer = null;
-				System.out.println("end");
-			}
-		});
-		timer.start();
 	}
 	
 	public void addListener(KeyListener key){
