@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.awt.Font;
@@ -34,8 +33,6 @@ public class GUI extends JFrame {
 	private String header;
 	
 	private Configure configure;
-	
-	private Timer timer;
 	
 	public GUI(Configure configure){
 		super();
