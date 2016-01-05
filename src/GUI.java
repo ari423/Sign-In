@@ -6,16 +6,15 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.event.*;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.awt.Font;
+import javax.swing.Timer;
 
 public class GUI extends JFrame {
 	
@@ -33,7 +32,9 @@ public class GUI extends JFrame {
 	private ArrayList<String> attendance;
 	private String header;
 	
-	private Configure configure;	
+	private Configure configure;
+	
+	private Timer timer;
 	
 	public GUI(Configure configure){
 		super();
@@ -54,7 +55,6 @@ public class GUI extends JFrame {
 			numcommas = attendance.get(0).split(",").length;
 			header = attendance.remove(0);
 			header += "," + (configure.startDate.get(Calendar.MONTH) +1) + "/" + configure.startDate.get(Calendar.DATE);
-			System.out.println("header: " + header);
 		}catch(Exception e){
 			e.printStackTrace();
 			numcommas = 0;
@@ -135,15 +135,23 @@ public class GUI extends JFrame {
 		String namestr = getName(codestr);
 		
 		if(namestr == null){
-			name.setText("Not In System");
+			setNameText("Not In System");
 		}else{
 			for(int i=0; i<attendance.size(); i++){
 				if(attendance.get(i).contains(namestr)){
 					if(attendance.get(i).split(",").length -1 < numcommas){
 						attendance.set(i, attendance.get(i) + "," + getTime());
-						System.out.println(attendance.get(i));
+						setNameText(namestr);
+						
 					}else{
-						name.setText("Already Signed In");
+						String[] line = attendance.get(i).split(",");
+						line[line.length -1] = (Double.parseDouble(line[line.length -1]) - getTime()) + "";
+						String tmp = line[0];
+						for(int j=1; j<line.length; j++){
+							tmp += "," + line[j];
+						}
+						attendance.set(attendance.size()-1, tmp);
+						setNameText("* " + namestr);
 					}
 					return;
 				}
@@ -190,6 +198,18 @@ public class GUI extends JFrame {
 		return array;
 	}
 	
+	private void setNameText(String str){
+		if(timer != null) timer = null;
+		name.setText(str);
+		timer = new Timer(2000, new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				name.setText("                     ");
+				timer = null;
+			}
+		});
+		timer.start();
+	}
+	
 	public void addListener(KeyListener key){
 		this.addKeyListener(key);
 		panel.addKeyListener(key);
@@ -212,7 +232,6 @@ public class GUI extends JFrame {
 				writer.println(attendance.get(i));
 			}
 			writer.close();
-			System.out.println("done");
 			System.exit(0);
 		}catch(Exception ex){
 			ex.printStackTrace();

@@ -29,7 +29,6 @@ public class Main {
 			public void actionPerformed(ActionEvent e){
 				configure.setVisible(false);
 				gui.setVisible(true);
-				
 			}
 		});
 		configure.addListener(new F2Listener());
