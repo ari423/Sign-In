@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.awt.Font;
-import javax.swing.Timer;
 
 public class GUI extends JFrame {
 	
@@ -141,7 +140,6 @@ public class GUI extends JFrame {
 		}else{
 			for(int i=0; i<attendance.size(); i++){
 				if(attendance.get(i).contains(namestr)){
-					System.out.println(attendance.get(i));
 					if(attendance.get(i).split(",").length -1 < numcommas){
 						attendance.set(i, attendance.get(i) + "," + getTime());
 						name.setText(namestr);
@@ -199,7 +197,6 @@ public class GUI extends JFrame {
 			array[i] = new Member(tmp.get(i).split(",")[1], tmp.get(i).split(",")[0]);
 		}
 		
-		System.out.println("test");
 		return array;
 	}
 	
