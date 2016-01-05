@@ -98,12 +98,16 @@ public class GUI extends JFrame {
 			}
 		});
 		
-		KeyListener listen = new F4Listener();
-		this.addKeyListener(listen);
-		panel.addKeyListener(listen);
-		name.addKeyListener(listen);
-		code.addKeyListener(listen);
-		go.addKeyListener(listen);
+		addListener(new KeyListener(){
+			public void keyReleased(KeyEvent e){
+				if(e.getKeyCode() == KeyEvent.VK_F4){
+					try{Thread.sleep(20);}catch(Exception ex){}
+					exit();
+				}
+			}
+			public void keyTyped(KeyEvent e){}
+			public void keyPressed(KeyEvent e){}
+		});
 		
 		this.addWindowListener(new WindowListener(){
 			public void windowOpened(WindowEvent e){}
@@ -141,8 +145,8 @@ public class GUI extends JFrame {
 				if(attendance.get(i).contains(namestr)){
 					if(attendance.get(i).split(",").length -1 < numcommas){
 						attendance.set(i, attendance.get(i) + "," + getTime());
+						System.out.println("prehit");
 						setNameText(namestr);
-						
 					}else{
 						String[] line = attendance.get(i).split(",");
 						line[line.length -1] = (Double.parseDouble(line[line.length -1]) - getTime()) + "";
@@ -199,12 +203,19 @@ public class GUI extends JFrame {
 	}
 	
 	private void setNameText(String str){
-		if(timer != null) timer = null;
+		System.out.println("hit");
+		if(timer != null){
+			timer.stop();
+			timer = null;
+		}
 		name.setText(str);
+		System.out.println("start");
 		timer = new Timer(2000, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				name.setText("                     ");
+				timer.stop();
 				timer = null;
+				System.out.println("end");
 			}
 		});
 		timer.start();
@@ -236,17 +247,6 @@ public class GUI extends JFrame {
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
-	}
-	
-	private class F4Listener implements KeyListener{
-		public void keyReleased(KeyEvent e){
-			if(e.getKeyCode() == KeyEvent.VK_F4){
-				try{Thread.sleep(20);}catch(Exception ex){}
-				exit();
-			}
-		}
-		public void keyTyped(KeyEvent e){}
-		public void keyPressed(KeyEvent e){}
 	}
 	
 }
